@@ -1,2 +1,2 @@
 # AnsibleProject2
-WordPress with 
+WordPress with Ansible 
