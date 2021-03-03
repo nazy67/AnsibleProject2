@@ -1,0 +1,10 @@
+facts: yes
+bootstrap_packages: 
+  - vim
+  - curl
+  - wget
+app_packages: 
+  - httpd
+  - mysql
+db_packages:
+  - mariadb-server

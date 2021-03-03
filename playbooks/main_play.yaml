@@ -1,0 +1,11 @@
+--- # starting of the play
+  - name: Main Play
+    hosts: all
+    gather_facts: "{{ facts }}"
+    vars_files:
+      - ../variables/main_vars.yaml
+    tasks: # all the tasks will be applied in order "sequantial"
+      - include: ../tasks/ping.yaml
+      - include: ../tasks/bootstrap.yaml
+      - include: ../tasks/webserver_packages.yaml
+      - include: ../tasks/database_packages.yaml

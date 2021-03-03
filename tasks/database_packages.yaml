@@ -1,0 +1,5 @@
+- name: Install Database Packages
+  when: ansible_facts['hostname'] == "database"
+  apt:
+    name: "{{ db_packages }}"
+    state: latest
