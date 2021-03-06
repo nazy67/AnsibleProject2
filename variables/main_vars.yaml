@@ -1,10 +1,17 @@
 facts: yes
+
 bootstrap_packages: 
   - vim
   - curl
   - wget
+
 app_packages: 
-  - httpd
+  - epel-release
   - mysql
+  - httpd
+
+php_package:
+  - php72  
+
 db_packages:
   - mariadb-server
