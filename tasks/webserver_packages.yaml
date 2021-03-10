@@ -35,4 +35,29 @@
   yum:
     name: "{{ php_package }}"
     state: present
-    enablerepo: "remi-*,base,epel"           
+    enablerepo: "remi-*,base,epel"
+
+# This example we just download wordpress but since we we want to unzip it too we used the next:
+#- name: Download WordPress
+#  when: ansible_facts['hostname'] == "webserver"
+#  get_url: 
+#    url: https://wordpress.org/latest.tar.gz
+#    dest: /tmp/wordpress.tar.gz
+#    #owner: httpd
+#    #group: httpd
+
+- name: Download and unarchive WordPress
+  when: ansible_facts['hostname'] == "webserver"
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Copy WordPress files to /var/www/html with owner and permissions
+  when: ansible_facts['hostname'] == "webserver" 
+  copy:
+    src: /tmp/wordpress/    # we use '/' because we want to copy just content of wordpress folder
+    dest: /var/www/html/
+    owner: apache
+    group: apache
+    remote_src: yes                     

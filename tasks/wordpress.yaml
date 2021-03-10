@@ -1,0 +1,11 @@
+- name: Install WordPress
+  get_url: 
+    url: wget http://wordpress.org/latest.tar.gz
+    dest: /var/www/html/
+    group: httpd
+
+- name: Install and unarchive a file that needs to be downloaded
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /var/www/html/
+    remote_src: yes  

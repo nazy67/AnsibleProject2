@@ -1,0 +1,9 @@
+---
+  - name: Install wget on localhost
+    hosts: localhost
+    gather_facts: no 
+    tasks:
+      - name: install wget
+        yum:
+          name: wget
+          state: latest
