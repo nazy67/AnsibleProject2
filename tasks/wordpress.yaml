@@ -1,11 +1,18 @@
-- name: Install WordPress
-  get_url: 
-    url: wget http://wordpress.org/latest.tar.gz
-    dest: /var/www/html/
-    group: httpd
+# either one of this tasks will work only difference is, the first one just downloads the wordpress, and second one will download and unzips it.
 
-- name: Install and unarchive a file that needs to be downloaded
+- name: Download WordPress
+  when: ansible_facts['hostname'] == "webserver"
+  get_url: 
+    url: https://wordpress.org/latest.tar.gz
+    dest: /tmp/wordpress.tar.gz
+    group: apache
+    owner: apache
+    
+ 
+
+- name: Install and unarchive WordPress
+  when: ansible_facts['hostname'] == "webserver"
   unarchive:
     src: https://wordpress.org/latest.tar.gz
-    dest: /var/www/html/
+    dest: /tmp/
     remote_src: yes  
