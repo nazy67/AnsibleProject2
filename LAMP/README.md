@@ -19,7 +19,6 @@ sudo yum-config-manager --enable remi-php72
 sudo yum update
 sudo yum install php72
 sudo yum install php72-php-fpm php72-php-gd php72-php-json php72-php-mbstring php72-php-mysqlnd php72-php-xml php72-php-xmlrpc php72-php-opcache
-
 ```
 After getting to know how the process happens on CLI now you I could write a playbook. Before you do it remove php 5.4 and all dependencies to it by runnig command ```yum remove php* -y```. When you install epel-release  you have to keep in mind that you are istalling not only epel-release repo, but also all the depending packages to it, same with remi-php72. All dependencies get's installed in different places on your machine and the main configuration file for ```yum``` is at /etc/yum.conf, and all the repos are at /etc/yum.repos.d.
 

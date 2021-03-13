@@ -11,7 +11,14 @@ app_packages:
   - httpd
 
 php_package:
-  - php72  
+  - php
+  - php-common
+  - php-opcache
+  - php-mcrypt
+  - php-cli
+  - php-gd
+  - php-curl
+  - php-mysql
 
 db_packages:
   - mariadb-server

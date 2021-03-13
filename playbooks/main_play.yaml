@@ -1,6 +1,6 @@
 --- # starting of the play
   - name: Main Play
-    hosts: prod
+    hosts: all
     gather_facts: "{{ facts }}"
     vars_files:
       - ../variables/main_vars.yaml
@@ -9,3 +9,4 @@
       - include: ../tasks/bootstrap.yaml
       - include: ../tasks/webserver_packages.yaml
       - include: ../tasks/database_packages.yaml
+      - include: ../tasks/start_apache.yaml

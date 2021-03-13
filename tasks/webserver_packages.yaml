@@ -16,12 +16,12 @@
     name: yum-utils
     state: latest  
 
-- name: Enable remi-php72 repository
+- name: Enable remi-php73 repository
   when: ansible_facts['hostname'] == "webserver"
   yum_repository:
-    metalink: https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch
+    mirrorlist: http://cdn.remirepo.net/enterprise/7/php73/mirror
     description: Extra Packages for Enterprise Linux 7 - Testing - $basearch
-    name: remi-php72
+    name: remi-php73
     enabled: yes
 
 - name: Update Repos on Webserver
@@ -30,7 +30,7 @@
     name: "*"
     state: latest
 
-- name: Install php7.2
+- name: Install php7.3
   when: ansible_facts['hostname'] == "webserver"
   yum:
     name: "{{ php_package }}"
