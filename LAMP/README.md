@@ -71,3 +71,4 @@ For ```database``` machine we have to install mariadb-server, which will be conn
 ### Notes
 
 When you want to install a package from repository like ```yum``` make sure to update it first, that way your packages will be up to date.
+Remember that WordPress 5.7 is not compitable with PHP 7.2, that's why it didn't work.
