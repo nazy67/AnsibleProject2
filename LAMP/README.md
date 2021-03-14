@@ -56,7 +56,7 @@ For ```database``` machine we have to install mariadb-server, which will be conn
 
 [Fedora distribution package manager](https://fedoraproject.org/wiki/DNF?rd=RPM)
 
-[Red Hat based distributions package manager](https://www.redhat.com/sysadmin/how-manage-packages)
+[Linux package management with YUM and RPM](https://www.redhat.com/sysadmin/how-manage-packages)
 
 [LAMP stack installation on CentOS 7 with liquidweb](https://www.liquidweb.com/kb/install-lamp-stack-centos-7/)
 
