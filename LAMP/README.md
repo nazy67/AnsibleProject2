@@ -6,11 +6,20 @@
 
 ### Description
 
-Installing, updating and removing packages on every distributon of Linux can come with it's own challenges , especially when you just got into IT world. Every Linux distribution has it's own package manager for example, Ubuntu machines uses ```apt```, Red Hat and CentOS uses ```yum``` (yellow dog updater, modifier), Fedora (Red Hat based Linux distro) uses ```yum```and ```dnf```(Dandified yum next generation of yum) and Mac OS uses ```homebrew```. The ways of installing depends on what interface you are comfortable working with GUI, CLI or simply use a tool like an ```Ansible```, and get it done with one playbook. The advantages of ansible playbooks is that, once you write a playbook it is reusable, and you can adjust it, depending what package you want to install, just pass it on variables file, without touching an actual playbook.
-Working with CentOS 7.6 machine in our case I faced some issues when tried intall a LAMP (Linux, Apache, MySql and PHP) stack, in order to prepare my machine for WordPress website.
-Before writing a playbook I trid to do it on command line, then you can see, which steps needs to be taken. 
-To start with I installed wget, curl, and vim while my machine was booting and I listed package names that needs to be installed in variables file it's: epel-release, mysql, httpd and used ```yum``` module in my playbook. All went well no issues! Until I installed ```php```...
-The installation of ```php``` with ```yum```worked, but the installed version of was older in my case php 5.4 and it's a latest version what ```yum repository``` has.  But the problem is that this version of ```php``` isn't compitable with WordPress, it has to be at least php 5.6 and later. So to fix that issue we need to install third party repositories such as epel-release (Extra Packages for Enterprise Linux) and remi-php72 ( a large collection of RPMS, including latest versions of PHP, Remi Collet is author at Red Hat Developer), where the latest version of php  is 7.2. After installing listed above repositories I was able to install the php 7.2 version and all it's dependencies, as I said earlier first I did it on command line and it looks like this:
+Installing, updating and removing packages on every distributon of Linux can come with it's own challenges , especially when you just got into IT world. Every Linux distribution has it's own package manager for example:
+
+- Ubuntu (based on the Debian Linux distribution) uses ```apt```. 
+- Red Hat (Red Hat-based Linux systems) like CentOS uses ```yum``` (yellow dog updater, modifier). 
+- Fedora also (Red Hat based Linux distro) uses ```yum```and ```dnf```(Dandified yum next generation of yum).
+
+Other Operating systems like Mac OS and Windows also have their own package manager:
+
+- Mac OS (based on the Unix operating system) uses ```homebrew```. 
+- Windows OS uses ```winget```.
+
+However, installing packages depends on what interface you are comfortable working with either GUI, CLI or simply use a tool like an ```Ansible```, and get it done with one playbook. The advantages of ansible playbooks is that, once you write a playbook it is reusable, and you can adjust it, depending what package you want to install, just pass it on variables file, without touching an actual playbook. 
+In our case we will use ```Ansible``` and we are working with CentOS 7.6 as our ```webserver``` and Ubuntu 18.04 as our ```database```, while intalling a LAMP (Linux, Apache, MySql and PHP) stack, we faced some issues, we LAMP for WordPress, because we want to create our website using WordPress. 
+Before we do anything we check ```Who we are?``` and ```Where we are?```that is ```golden rule``` of using configuration management tool ```Ansible```.  We use ansible modules for writing a playbooks but, before we do automation we have know how to do it on command line, then it will be much easier for us to build our playbook's tasks in order make it ```sequential```.  Ansible runs tasks in order, that is why we need to know, which task needs to be run first and when we do it on CLI, it will be more clear for us, all commands which we run on CLI is here:
 ```
 sudo yum install epel-release
 sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
@@ -20,13 +29,27 @@ sudo yum update
 sudo yum install php72
 sudo yum install php72-php-fpm php72-php-gd php72-php-json php72-php-mbstring php72-php-mysqlnd php72-php-xml php72-php-xmlrpc php72-php-opcache
 ```
-After getting to know how the process happens on CLI now you I could write a playbook. Before you do it remove php 5.4 and all dependencies to it by runnig command ```yum remove php* -y```. When you install epel-release  you have to keep in mind that you are istalling not only epel-release repo, but also all the depending packages to it, same with remi-php72. All dependencies get's installed in different places on your machine and the main configuration file for ```yum``` is at /etc/yum.conf, and all the repos are at /etc/yum.repos.d.
+To start with we installed wget, curl, and vim while our machines were booting and we listed package names for ```webserver``` and ```database``` in variables file: 
+#### webserver packages
+- epel-release
+- mysql
+- httpd 
 
-<img src="images/yum.repo.d_content.png" alt="aws" width="800" height="500">
+#### database packages:
+- mariadb-server
 
-As it shown on the example all repository folders are inside of /etc/yum.repos.d. but dependencies of this packages can be in other folders, that's why we run ```php*```.
+and we used ```yum``` module for it. All went well no issues! Until we installed ```php``` package, where installed version of php is 5.4 and it's a latest version that ```yum repository``` had.  But we know, this version of ```php``` isn't compitable with WordPress it's too old, it has to be at least php 5.6 and up. So to fix that we need to install third party repositories, where the latest version of php is 7.2:
 
-For a security reasons always update packages to latest versions, in my case I checked all  installed packages versions, before to download the Wordpress it is important , you need to make sure that  all packages are compatible with each other.
+- epel-release (Extra Packages for Enterprise Linux)
+- remi-php72 ( a large collection of RPMS, including latest versions of PHP, Remi Collet is author at Red Hat Developer) 
+
+Why it's two different repositories? Because we also want to install all dependencies of ```php``` and they are in both repositories. After installing listed above repos we are able to install the php 7.2 version with dependencies.
+
+Since we don't need  php 5.4 we remove it with command ```yum remove php* -y```. Keep in mind, when you install packages or repository they all come with dependencies and they do get installed in different places on your machine and the main configuration file for ```yum``` is under /etc/yum.conf, and all the repos are under /etc/yum.repos.d. It's just the repository file names not the actual repository itself. When you open it you can see either metalink, mirrorlist or baseurl to those repositories, using those links you are able to istall needed packages. If you decide for some reason to remove repository you always give ```*``` after the name of package or repo you want to delete. The next image is how it looks yum.repos.d. from inside:
+
+<img src="images/yum.repo.d_content.png" alt="aws" width="800" height="450">
+
+For a security reasons always update your packages to latest versions, in my case I checked all  installed packages versions, before to download the WordPress it is important, you need to make sure that  all packages are compatible with each other.
 ```
 ansible -i inventory.yaml webserver -m command -a "mysql --version"
 ansible -i inventory.yaml webserver -m command -a "httpd -v"
@@ -46,17 +69,25 @@ mysql client:
 database | CHANGED | rc=0 >>
 mysql  Ver 15.1 Distrib 10.1.47-MariaDB, for debian-linux-gnu (x86_64) using readline 5.2
 
-
 webserver | CHANGED | rc=0 >>
 mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
 ```
-For ```database``` machine we have to install mariadb-server, which will be connecnted with ```webserver``` machine. Now all packages are installed we can install WordPress
+After installing WordPress we faced another issue, ```wordpress``` wasn't reading from /var/www/html/index.html, to fix that we tried to install extra packages for PHP still didn't work. The next step was to check the version of ```wordpress``` with command:
+```
+grep wp_version /var/www/html/wp-includes/version.php
+```
+You have to run it from the inside of ```webserver``` and we found out that the version of installed ```wordpress``` is 5.7. With that info in our hands, we did some more research on WordPress, and found out that WordPress 5.7 is not compitable with PHP 7.2. That was an eye opening for most of us, another rule comes around ```Always check compitablity of packages!``` With that in mind we sshed as a root user to ```webserver``` and deleted all ```php``` packages, next we disabled remi-php72 repo, after we enabled remi-php7.3 and installed PHP 7.3 with all it's dependencies, after that long journey our wordpress was reading from index.html.
 
+To ```database``` we can access from ```webserver``` machine with the next command, where -u is a user and -p is a password of the user, in this case it's a root user.
+```
+mysql -u root -p
+```
+After getting inside of ```database``` machine we created ```wordpress database``` , ```admin user with password``` and granted all priveleges to our admin user (save that info somewhere we are going to need it when we configure WordPress). 
 ### Useful Links
 
 [Fedora distribution package manager](https://fedoraproject.org/wiki/DNF?rd=RPM)
 
-[Red Hat based distributions package manager](https://www.redhat.com/sysadmin/how-manage-packages)
+[Linux package management with YUM and RPM](https://www.redhat.com/sysadmin/how-manage-packages)
 
 [LAMP stack installation on CentOS 7 with liquidweb](https://www.liquidweb.com/kb/install-lamp-stack-centos-7/)
 
@@ -71,3 +102,4 @@ For ```database``` machine we have to install mariadb-server, which will be conn
 ### Notes
 
 When you want to install a package from repository like ```yum``` make sure to update it first, that way your packages will be up to date.
+Remember that WordPress 5.7 is not compitable with PHP 7.2, that's why it didn't work.
