@@ -1,4 +1,4 @@
-- name: Start apache
+- name: Start and restart Apache
   when: ansible_facts['hostname'] == "webserver"
   systemd:
     name: httpd
