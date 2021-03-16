@@ -1,6 +1,7 @@
 ### LAMP stack installation for WordPress
 
 ### Resources
+  - Digital Ocean account
   - Webserver Server machine (CentOS 7.6)
   - Database machine (Ubuntu 18.04)
 
@@ -91,6 +92,7 @@ To ```database``` we can access from ```webserver``` machine with the next comma
 mysql -u root -p
 ```
 After getting inside of ```database``` machine we created ```wordpress database``` , ```admin user with password``` and granted all priveleges to our admin user (save that info somewhere we are going to need it when we configure WordPress). 
+
 ### Useful Links
 
 [Fedora distribution package manager](https://fedoraproject.org/wiki/DNF?rd=RPM)
