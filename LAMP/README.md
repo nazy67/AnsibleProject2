@@ -76,7 +76,13 @@ After installing WordPress we faced another issue, ```wordpress``` wasn't readin
 ```
 grep wp_version /var/www/html/wp-includes/version.php
 ```
-You have to run it from the inside of ```webserver``` and we found out that the version of installed ```wordpress``` is 5.7. With that info in our hands, we did some more research on WordPress, and found out that WordPress 5.7 is not compitable with PHP 7.2. That was an eye opening for most of us, another rule comes around ```Always check compitablity of packages!``` With that in mind we sshed as a root user to ```webserver``` and deleted all ```php``` packages, next we disabled remi-php72 repo, after we enabled remi-php7.3 and installed PHP 7.3 with all it's dependencies, after that long journey our wordpress was reading from index.html.
+You have to run it from the inside of ```webserver``` and we found out that the version of installed ```wordpress``` is 5.7. With that info in our hands, we did some more research on WordPress, and found out that WordPress 5.7 is not compitable with PHP 7.2. That was an eye opening for most of us, another rule comes around ```Always check compitablity of packages!``` With that in mind we sshed as a root user to ```webserver``` and deleted all ```php``` packages, next we disabled remi-php72 repo, after we enabled remi-php7.3 and installed PHP 7.3 with all it's dependencies, after that long journey our wordpress was reading from index.html. 
+But again before we adjusted our playbook tasks we run all the commands on command line:
+```
+yum-config-manager --disable remi-php72
+yum-config-manager --enable remi-php73
+yum install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysql –y
+```
 
 To ```database``` we can access from ```webserver``` machine with the next command, where -u is a user and -p is a password of the user, in this case it's a root user.
 ```
