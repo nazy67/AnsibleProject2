@@ -8,7 +8,8 @@
 
 Installing, updating and removing packages on every distributon of Linux can come with it's own challenges , especially when you just got into IT world. Every Linux distribution has it's own package manager for example:
 
-- Ubuntu (based on the Debian Linux distribution) uses ```apt```. 
+- Debian ```dpkg```(Debian package tool).
+- Ubuntu (based on the Debian Linux distribution) uses ```apt```(Advanced Package Tool). 
 - Red Hat (Red Hat-based Linux systems) like CentOS uses ```yum``` (yellow dog updater, modifier). 
 - Fedora also (Red Hat based Linux distro) uses ```yum```and ```dnf```(Dandified yum next generation of yum).
 
