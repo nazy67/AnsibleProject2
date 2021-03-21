@@ -1,6 +1,7 @@
 ### LAMP stack installation for WordPress
 
 ### Resources
+  - Digital Ocean account
   - Webserver Server machine (CentOS 7.6)
   - Database machine (Ubuntu 18.04)
 
@@ -8,7 +9,8 @@
 
 Installing, updating and removing packages on every distributon of Linux can come with it's own challenges , especially when you just got into IT world. Every Linux distribution has it's own package manager for example:
 
-- Ubuntu (based on the Debian Linux distribution) uses ```apt```. 
+- Debian ```dpkg```(Debian package tool).
+- Ubuntu (based on the Debian Linux distribution) uses ```apt```(Advanced Package Tool). 
 - Red Hat (Red Hat-based Linux systems) like CentOS uses ```yum``` (yellow dog updater, modifier). 
 - Fedora also (Red Hat based Linux distro) uses ```yum```and ```dnf```(Dandified yum next generation of yum).
 
@@ -17,6 +19,7 @@ Other Operating systems like Mac OS and Windows also have their own package mana
 - Mac OS (based on the Unix operating system) uses ```homebrew```. 
 - Windows OS uses ```winget```.
 
+The commands dpkg and rpm operate on individual package files. In practice, almost all package management tasks are performed by the commands ```apt``` on systems that use DEB packages or by ```yum``` or ```dnf``` on systems that use RPM packages. These commands work with catalogues of packages, can download new packages and their dependencies, and check for newer versions of the installed packages. More often than not, a package may depend on others to work as intended.
 However, installing packages depends on what interface you are comfortable working with either GUI, CLI or simply use a tool like an ```Ansible```, and get it done with one playbook. The advantages of ansible playbooks is that, once you write a playbook it is reusable, and you can adjust it, depending what package you want to install, just pass it on variables file, without touching an actual playbook. 
 In our case we will use ```Ansible``` and we are working with CentOS 7.6 as our ```webserver``` and Ubuntu 18.04 as our ```database```, while intalling a LAMP (Linux, Apache, MySql and PHP) stack, we faced some issues, we LAMP for WordPress, because we want to create our website using WordPress. 
 Before we do anything we check ```Who we are?``` and ```Where we are?```that is ```golden rule``` of using configuration management tool ```Ansible```.  We use ansible modules for writing a playbooks but, before we do automation we have know how to do it on command line, then it will be much easier for us to build our playbook's tasks in order make it ```sequential```.  Ansible runs tasks in order, that is why we need to know, which task needs to be run first and when we do it on CLI, it will be more clear for us, all commands which we run on CLI is here:
@@ -76,13 +79,20 @@ After installing WordPress we faced another issue, ```wordpress``` wasn't readin
 ```
 grep wp_version /var/www/html/wp-includes/version.php
 ```
-You have to run it from the inside of ```webserver``` and we found out that the version of installed ```wordpress``` is 5.7. With that info in our hands, we did some more research on WordPress, and found out that WordPress 5.7 is not compitable with PHP 7.2. That was an eye opening for most of us, another rule comes around ```Always check compitablity of packages!``` With that in mind we sshed as a root user to ```webserver``` and deleted all ```php``` packages, next we disabled remi-php72 repo, after we enabled remi-php7.3 and installed PHP 7.3 with all it's dependencies, after that long journey our wordpress was reading from index.html.
+You have to run it from the inside of ```webserver``` and we found out that the version of installed ```wordpress``` is 5.7. With that info in our hands, we did some more research on WordPress, and found out that WordPress 5.7 is not compitable with PHP 7.2. That was an eye opening for most of us, another rule comes around ```Always check compitablity of packages!``` With that in mind we sshed as a root user to ```webserver``` and deleted all ```php``` packages, next we disabled remi-php72 repo, after we enabled remi-php7.3 and installed PHP 7.3 with all it's dependencies, after that long journey our wordpress was reading from index.html. 
+But again before we adjusted our playbook tasks we run all the commands on command line:
+```
+yum-config-manager --disable remi-php72
+yum-config-manager --enable remi-php73
+yum install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysql –y
+```
 
 To ```database``` we can access from ```webserver``` machine with the next command, where -u is a user and -p is a password of the user, in this case it's a root user.
 ```
 mysql -u root -p
 ```
 After getting inside of ```database``` machine we created ```wordpress database``` , ```admin user with password``` and granted all priveleges to our admin user (save that info somewhere we are going to need it when we configure WordPress). 
+
 ### Useful Links
 
 [Fedora distribution package manager](https://fedoraproject.org/wiki/DNF?rd=RPM)
