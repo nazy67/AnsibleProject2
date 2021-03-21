@@ -1,5 +1,11 @@
 - name: Install Database Packages
   when: ansible_facts['hostname'] == "database"
-  apt:
+  yum:
     name: "{{ db_packages }}"
     state: latest
+
+#- name: Install Database2 Packages
+#  when: ansible_facts['hostname'] == "database2"
+#  yum:
+#    name: "{{ db_packages }}"
+#    state: latest    
