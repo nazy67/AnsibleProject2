@@ -87,11 +87,12 @@ yum-config-manager --enable remi-php73
 yum install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysql –y
 ```
 
-To ```database``` we can access from ```webserver``` machine with the next command, where -u is a user and -p is a password of the user, in this case it's a root user.
+We installed mariadb on database droplet, but we have to still run a secure installation, in order to do that we run ```mysql_secure_installation``` it's run by root user from your local machine after ssh into it. It will ask you to enter root user’s password, but since we didn't created root user's password yet, just press enter and set root's password for database.  you need to run:
+It will ask you to enter root user’s password for the server,  but we database itself. If you have installed and haven’t set the root password yet , then just press enter,  set root password yes. Now it's time to configure database on the browser when we put an IP address of the webserver, we have to use information from database configuration when we creatd a database. To do that we run the next command:  
 ```
 mysql -u root -p
 ```
-After getting inside of ```database``` machine we created ```wordpress database``` , ```admin user with password``` and granted all priveleges to our admin user (save that info somewhere we are going to need it when we configure WordPress). 
+Enter roots password and create a database, database user from webserver with private IP address of webserver. To ```database``` we can access from ```webserver``` machine with the next command, where -u is a user and -p is a password of the user, in this case it's a root user.After getting inside of ```database``` machine we created ```wordpress database``` , ```admin user with password``` and granted all priveleges to our admin user (save that info somewhere we are going to need it when we configure WordPress). 
 
 ### Useful Links
 
