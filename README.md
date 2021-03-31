@@ -12,6 +12,8 @@ WordPress with Ansible
 
 ## Usage
 
+In this project we have set up our WordPress webserver using Digital Ocean cloud platform. 
+
 ## Resources
   - Webserver Server (CentOS 7.6)
   - Database (Ubuntu 18.04)
