@@ -20,5 +20,6 @@ In this project we have set up our WordPress webserver using Digital Ocean cloud
 
 ## Useful Links
 
+[LAPM stack installation](https://github.com/nazy67/AnsibleProject2/tree/main/LAMP)
 
 ## README.md needs to be updated
