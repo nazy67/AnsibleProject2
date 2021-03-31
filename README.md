@@ -12,7 +12,7 @@ WordPress with Ansible
 
 ## Usage
 
-In this project we have set up our WordPress webserver using Digital Ocean cloud platform. 
+In this project we have set up our WordPress webserver using Digital Ocean cloud platform. When we set up our resources ready to go for some reason there was an issue with installing WordPress, beacuse it kept giving an error as ```Error establishing connention```. We are still working on that issue, as soon as it will be solved this file will be updated.
 
 ## Resources
   - Webserver Server (CentOS 7.6)
